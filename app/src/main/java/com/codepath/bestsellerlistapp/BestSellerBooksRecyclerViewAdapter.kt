@@ -1,63 +1,63 @@
 package com.codepath.bestsellerlistapp
-
+import com.squareup.picasso.Picasso
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.codepath.bestsellerlistapp.R.id
+import com.google.gson.Gson
 
-/**
- * [RecyclerView.Adapter] that can display a [BestSellerBook] and makes a call to the
- * specified [OnListFragmentInteractionListener].
- */
-class BestSellerBooksRecyclerViewAdapter(
-    private val books: List<BestSellerBook>,
+class MovieAdapter(
+    private val movies: List<Movie>,
     private val mListener: OnListFragmentInteractionListener?
-    )
-    : RecyclerView.Adapter<BestSellerBooksRecyclerViewAdapter.BookViewHolder>()
-    {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
+) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_best_seller_book, parent, false)
-        return BookViewHolder(view)
+            .inflate(R.layout.movie_item_layout, parent, false)
+        return MovieViewHolder(view)
     }
 
-    /**
-     * This inner class lets us refer to all the different View elements
-     * (Yes, the same ones as in the XML layout files!)
-     */
-    inner class BookViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        var mItem: BestSellerBook? = null
-        val mBookTitle: TextView = mView.findViewById<View>(id.book_title) as TextView
-        val mBookAuthor: TextView = mView.findViewById<View>(id.book_author) as TextView
+    inner class MovieViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
+        val mItem: Movie? = null
+        val mMovieName: TextView = mView.findViewById(R.id.movie_name)
+        val mMovieTitle: TextView = mView.findViewById(R.id.movie_title)
+        val mMovieDescription: TextView = mView.findViewById(R.id.movie_description)
+        val mMoviePoster: ImageView = mView.findViewById(R.id.movie_poster)
 
-        override fun toString(): String {
-            return mBookTitle.toString() + " '" + mBookAuthor.text + "'"
-        }
-    }
+        fun bind(movie: Movie) {
+            mMovieName.text = movie.name.toString()
+            mMovieTitle.text = movie.title
+            mMovieDescription.text = movie.description
 
-    /**
-     * This lets us "bind" each Views in the ViewHolder to its' actual data!
-     */
-    override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
-        val book = books[position]
+            // Load and display the movie poster using Picasso
+            if (!movie.posterUrl.isNullOrEmpty()) {
+                Picasso.get().load(movie.posterUrl).into(mMoviePoster)
+            } else {
+                // Optionally, you can set a placeholder image or handle the case when the poster URL is empty.
+                // For example:
+                // Picasso.get().load(R.drawable.placeholder_image).into(mMoviePoster)
+            }
 
-        holder.mItem = book
-        holder.mBookTitle.text = book.title
-        holder.mBookAuthor.text = book.author
-
-        holder.mView.setOnClickListener {
-            holder.mItem?.let { book ->
-                mListener?.onItemClick(book)
+            mView.setOnClickListener {
+                mListener?.onItemClick(movie)
             }
         }
     }
 
-    /**
-     * Remember: RecyclerView adapters require a getItemCount() method.
-     */
-    override fun getItemCount(): Int {
-        return books.size
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        val movie = movies[position]
+        holder.bind(movie)
     }
+
+    override fun getItemCount(): Int {
+        return movies.size
+    }
+}
+
+class Glide {
+    val gson = Gson()
+
 }
