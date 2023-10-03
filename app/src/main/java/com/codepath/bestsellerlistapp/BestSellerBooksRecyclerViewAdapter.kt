@@ -1,6 +1,7 @@
 package com.codepath.bestsellerlistapp
 import com.squareup.picasso.Picasso
 import android.view.LayoutInflater
+import com.bumptech.glide.Glide
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -32,14 +33,9 @@ class MovieAdapter(
             mMovieTitle.text = movie.title
             mMovieDescription.text = movie.description
 
-            // Load and display the movie poster using Picasso
-            if (!movie.posterUrl.isNullOrEmpty()) {
-                Picasso.get().load(movie.posterUrl).into(mMoviePoster)
-            } else {
-                // Optionally, you can set a placeholder image or handle the case when the poster URL is empty.
-                // For example:
-                // Picasso.get().load(R.drawable.placeholder_image).into(mMoviePoster)
-            }
+            Glide.with(itemView.context)
+                .load(movie.posterUrl)
+                .into(mMoviePoster)
 
             mView.setOnClickListener {
                 mListener?.onItemClick(movie)
