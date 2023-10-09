@@ -1,4 +1,5 @@
 package com.codepath.bestsellerlistapp
+import android.content.Intent
 import com.squareup.picasso.Picasso
 import android.view.LayoutInflater
 import com.bumptech.glide.Glide
@@ -39,7 +40,23 @@ class MovieAdapter(
 
             mView.setOnClickListener {
                 mListener?.onItemClick(movie)
+                //
+                mListener?.onItemClick(movie)
+
+                // Create an Intent to start the MovieDetailActivity
+                val intent = Intent(itemView.context, MovieDetailsActivity::class.java)
+                // Pass necessary data to the detail activity
+                intent.putExtra("movie_name", movie.name)
+                intent.putExtra("movie_title", movie.title)
+                intent.putExtra("movie_description", movie.description)
+                intent.putExtra("movie_poster_url", movie.posterUrl)
+                // Add any additional data you want to pass
+
+                itemView.context.startActivity(intent)
+
+
             }
+            //
         }
     }
 

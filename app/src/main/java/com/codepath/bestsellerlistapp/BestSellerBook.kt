@@ -1,6 +1,7 @@
 package com.codepath.bestsellerlistapp
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * The Model for storing a single book from the NY Times API
@@ -14,7 +15,8 @@ import com.google.gson.annotations.SerializedName
  * SerializedName tags MUST match the JSON response for the
  * object to correctly parse with the gson library.
  */
-class Movie {
+
+class Movie : Serializable {
     @SerializedName("name")//rank
     var name: String? = null
 
@@ -31,9 +33,17 @@ class Movie {
     @SerializedName("posterUrl")//author
     var posterUrl: String? = null
 
+    @SerializedName("actors")//rank
+    var actors: String? = null
 
     //TODO description
 
 
     //TODO-STRETCH-GOALS amazonUrl
 }
+
+data class Actors(
+    val name: String,
+    val posterUrl: String,
+    val description: String
+)

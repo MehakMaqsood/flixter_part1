@@ -1,5 +1,6 @@
 package com.codepath.bestsellerlistapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,15 +23,8 @@ import org.json.JSONException
 
 private const val API_KEY = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
 
-/*
- * The class for the only fragment in the app, which contains the progress bar,
- * recyclerView, and performs the network calls to the NY Times API.
- */
 class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
 
-    /*
-     * Constructing the view
-     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,7 +50,7 @@ class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
         params["api_key"] = API_KEY
 
         client.get(
-            "https://api.themoviedb.org/3/movie/now_playing",
+            "https://api.themoviedb.org/3/movie/top_rated",
             params,
             object : JsonHttpResponseHandler() {
                 override fun onSuccess(
@@ -111,9 +105,15 @@ class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
                 }
             }
         )
+
+
     }
 
     override fun onItemClick(item: Movie) {
-        Toast.makeText(context, "test: " + item.title, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Clicked on: " + item.title, Toast.LENGTH_LONG).show()
+        val intent = Intent(context, MovieDetailsActivity::class.java)
+        // Pass the Movie object to the DetailActivity
+        intent.putExtra("movie_data", item)
+        context?.startActivity(intent)
     }
 }
